@@ -9,6 +9,10 @@
     item-key="dt"
     show-expand
   >
+    <template v-slot:item.wind_deg="{ item }">
+      <p v-html="getSideArrows(item.wind_deg)"></p>
+    </template>
+
     <template v-slot:top>
       <v-app-bar src="https://picsum.photos/1920/1080?random">
         <h2 class="white--text">
@@ -67,6 +71,11 @@ export default {
       type: String,
       required: true,
     },
+    direction: {
+      type: String,
+      required: true,
+    },
+
   },
   computed: {
     getHeaders() {
@@ -98,6 +107,25 @@ export default {
         eve: "Вечером",
       };
       return `${partsDay[index]} ${this.getCorrectTempSign(temp)}`;
+    },
+    getSideArrows(deg) {
+      if ((deg >= 0 && deg <= 10) || deg >= 350) {
+        return `${deg}&deg С &darr;`;
+      } else if (deg > 10 && deg < 80) {
+        return `${deg}&deg СВ &#x2199;`;
+      } else if (deg >= 80 && deg <= 100) {
+        return `${deg}&deg В &larr;`;
+      } else if (deg > 100 && deg < 170) {
+        return `${deg}&deg ЮВ &#x2196;`;
+      } else if (deg >= 170 && deg <= 190) {
+        return `${deg}&deg Ю &darr;`;
+      } else if (deg > 190 && deg < 260) {
+        return `${deg}&deg ЮЗ &#x2197;`;
+      } else if (deg >= 260 && deg <= 280) {
+        return `${deg}&deg З &rarr;`;
+      } else if (deg > 280 && deg < 350) {
+        return `${deg}&deg СЗ &#x2198;`;
+      }
     },
     getCorrectTempSign(temp) {
       return temp > 0 ? `+${temp}` : `-${temp}`;
