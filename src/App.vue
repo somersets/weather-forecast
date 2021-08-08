@@ -121,7 +121,6 @@ export default {
                 if (!el.rain) {
                   el.rain = "-";
                 }
-
                 this.normalizeTemp(el.temp);
                 this.normalizeTemp(el.feels_like);
 

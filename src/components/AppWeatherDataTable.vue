@@ -71,11 +71,6 @@ export default {
       type: String,
       required: true,
     },
-    direction: {
-      type: String,
-      required: true,
-    },
-
   },
   computed: {
     getHeaders() {
