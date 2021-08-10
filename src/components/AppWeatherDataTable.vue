@@ -113,7 +113,7 @@ export default {
       } else if (deg > 100 && deg < 170) {
         return `${deg}&deg ЮВ &#x2196;`;
       } else if (deg >= 170 && deg <= 190) {
-        return `${deg}&deg Ю &darr;`;
+        return `${deg}&deg Ю &uarr;`;
       } else if (deg > 190 && deg < 260) {
         return `${deg}&deg ЮЗ &#x2197;`;
       } else if (deg >= 260 && deg <= 280) {
