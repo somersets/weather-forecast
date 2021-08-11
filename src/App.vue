@@ -49,44 +49,7 @@ export default {
       backgroundCity: "",
     };
   },
-  computed: {
-    getOptionsDate() {
-      // настройки для формата даты
-      return {
-        weekday: "short",
-        month: "short",
-        day: "2-digit",
-      };
-    },
-  },
   methods: {
-    normalizeTemp(temps) {
-      for (let tmp in temps) {
-        temps[tmp] = temps[tmp].toFixed(0);
-      }
-    },
-    normalizeMinMaxTemp(min, max) {
-      // добавление знака плюс и минус в зависимости от температуры
-      // меньше или больше 0 и т.д.
-      if (min > 0 && max > 0) {
-        return `+${min.toFixed(0)}...+${max.toFixed(0)}`;
-      } else if (min < 0 && max > 0) {
-        return `-${min.toFixed(0)}...+${max.toFixed(0)}`;
-      } else {
-        return `-${min.toFixed(0)}...-${max.toFixed(0)}`;
-      }
-    },
-    normalizeProbability(pop) {
-      // преобразовывает десятичный коэффициент вероятности исхода в проценты
-      return (pop * 100).toFixed(0);
-    },
-    normalizeDateFormat(timestamp) {
-      // перевод из UNIX в читабельный формат
-      return new Date(timestamp * 1000).toLocaleTimeString(
-        "ru-ru",
-        this.getOptionsDate
-      );
-    },
     getForecast(cityName) {
       if (!cityName.length) {
         return;
@@ -112,28 +75,8 @@ export default {
             .oneCallForecast(this.cityData.coord.lat, this.cityData.coord.lon)
             .then((response) => {
               this.isWeatherDataLoading = false;
-              // перезапись некоторых полей для корректного отображения в таблице
-              response.data.daily.forEach((el) => {
-                const { min, max } = el.temp;
-                el.tempMinMax = this.normalizeMinMaxTemp(min, max);
-
-                // проверка на существование поля объёма осадков
-                if (!el.rain) {
-                  el.rain = "-";
-                }
-                this.normalizeTemp(el.temp);
-                this.normalizeTemp(el.feels_like);
-
-                // т.к всегда приходит массив из 1 элемента достаем первый
-                // и забираем у него описание погоды
-                const { description } = el.weather[0];
-                el.weatherDesc = description;
-
-                el.pop = this.normalizeProbability(el.pop);
-
-                el.dt = this.normalizeDateFormat(el.dt);
-              });
               this.sevenDaysForecast = response.data.daily;
+              console.log(response.data);
             });
         })
         .catch(() => {

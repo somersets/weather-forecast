@@ -9,10 +9,24 @@
     item-key="dt"
     show-expand
   >
-    <template v-slot:item.wind_deg="{ item }">
-      <p v-html="getSideArrows(item.wind_deg)"></p>
+    <template v-slot:item.dt="{ item }">
+      {{ normalizeDateFormat(item.dt) }}
     </template>
-
+    <template v-slot:item.weather="{ item }">
+      {{ item.weather[0].description }}
+    </template>
+    <template v-slot:item.tempMinMax="{ item }">
+      {{ normalizeMinMaxTemp(item.temp.min, item.temp.max) }}
+    </template>
+    <template v-slot:item.wind_deg="{ item }">
+      <span v-html="getSideArrows(item.wind_deg)"></span>
+    </template>
+    <template v-slot:item.pop="{ item }">
+      {{ normalizeProbability(item.pop) }}
+    </template>
+    <template v-slot:item.rain="{ item }">
+      {{ item.rain || "-" }}
+    </template>
     <template v-slot:top>
       <v-app-bar src="https://picsum.photos/1920/1080?random">
         <h2 class="white--text">
@@ -73,6 +87,14 @@ export default {
     },
   },
   computed: {
+    getOptionsDate() {
+      // настройки для формата даты
+      return {
+        weekday: "short",
+        month: "short",
+        day: "2-digit",
+      };
+    },
     getHeaders() {
       return [
         {
@@ -81,7 +103,7 @@ export default {
           sortable: false,
           value: "dt",
         },
-        { text: "Погода", value: "weatherDesc" },
+        { text: "Погода", value: "weather" },
         { text: "Температура", value: "tempMinMax" },
         { text: "Скорость ветра, м/c", value: "wind_speed" },
         { text: "Направление ветра, м/c", value: "wind_deg" },
@@ -94,6 +116,28 @@ export default {
     },
   },
   methods: {
+    normalizeMinMaxTemp(min, max) {
+      // добавление знака плюс и минус в зависимости от температуры
+      // меньше или больше 0 и т.д.
+      if (min > 0 && max > 0) {
+        return `+${min.toFixed(0)}...+${max.toFixed(0)}`;
+      } else if (min < 0 && max > 0) {
+        return `-${min.toFixed(0)}...+${max.toFixed(0)}`;
+      } else {
+        return `-${min.toFixed(0)}...-${max.toFixed(0)}`;
+      }
+    },
+    normalizeDateFormat(timestamp) {
+      // перевод из UNIX в читабельный формат
+      return new Date(timestamp * 1000).toLocaleTimeString(
+        "ru-ru",
+        this.getOptionsDate
+      );
+    },
+    normalizeProbability(pop) {
+      // преобразовывает десятичный коэффициент вероятности исхода в проценты
+      return (pop * 100).toFixed(0);
+    },
     getFeelLikesTemperatureDuringTheDay(temp, index) {
       const partsDay = {
         day: "Днём",
@@ -101,7 +145,7 @@ export default {
         morn: "Утром",
         eve: "Вечером",
       };
-      return `${partsDay[index]} ${this.getCorrectTempSign(temp)}`;
+      return `${partsDay[index]} ${this.getCorrectTempSign(temp.toFixed(0))}`;
     },
     getSideArrows(deg) {
       if ((deg >= 0 && deg <= 10) || deg >= 350) {
