@@ -9,19 +9,14 @@
   </v-btn>
 </template>
 
-<script>
-export default {
-  name: "AppSearchButton",
-  props: {
-    isWeatherLoading: {
-      type: Boolean,
-      required: true,
-    },
-    disabled: {
-      type: Boolean,
-    },
-  },
-};
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+@Component
+export default class extends Vue {
+  @Prop({ required: true }) readonly isWeatherLoading!: boolean;
+  @Prop({ required: true }) readonly disabled!: boolean;
+}
 </script>
 
 <style scoped></style>

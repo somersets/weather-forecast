@@ -26,10 +26,14 @@ apiClient.interceptors.response.use(
 );
 
 export default {
-  async getWeatherCurrent(city, units = "metric") {
+  async getWeatherCurrent(city: string, units: string = "metric") {
     return await apiClient.get(`weather?q=${city}&units=${units}&lang=ru`);
   },
-  async oneCallForecast(lat, lon, units = "metric") {
+  async oneCallForecast(
+    lat: number,
+    lon: number,
+    units: string = "metric"
+  ): Promise<any> {
     return await apiClient.get(
       `onecall?lat=${lat}&lon=${lon}&units=${units}&lang=ru&exclude=minutely,hourly,alerts,current`
     );

@@ -2,6 +2,11 @@
 node_modules
 /dist
 
+# temporarily
+src/enums.ts
+src/enums.js
+src/enums.js.map
+#
 .env
 
 # local env files
