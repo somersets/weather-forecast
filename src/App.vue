@@ -76,7 +76,6 @@ export default {
             .then((response) => {
               this.isWeatherDataLoading = false;
               this.sevenDaysForecast = response.data.daily;
-              console.log(response.data);
             });
         })
         .catch(() => {

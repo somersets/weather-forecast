@@ -1,6 +1,4 @@
 import axios from "axios";
-const weatherID = "7ddbbac4414598a0582efd0c12096e75";
-
 // небольшая прослойка для запросов
 
 const apiClient = axios.create({
@@ -12,15 +10,28 @@ const apiClient = axios.create({
   },
 });
 
+apiClient.interceptors.request.use(
+  (req) => {
+    req.url += `&appid=${process.env.VUE_APP_API_KEY}`;
+    return req;
+  },
+  () => {}
+);
+
+apiClient.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  () => {}
+);
+
 export default {
   async getWeatherCurrent(city, units = "metric") {
-    return await apiClient.get(
-      `weather?q=${city}&units=${units}&lang=ru&appid=${weatherID}`
-    );
+    return await apiClient.get(`weather?q=${city}&units=${units}&lang=ru`);
   },
   async oneCallForecast(lat, lon, units = "metric") {
     return await apiClient.get(
-      `onecall?lat=${lat}&lon=${lon}&units=${units}&lang=ru&exclude=minutely,hourly,alerts,current&appid=${weatherID}`
+      `onecall?lat=${lat}&lon=${lon}&units=${units}&lang=ru&exclude=minutely,hourly,alerts,current`
     );
   },
 };
