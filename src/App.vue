@@ -32,13 +32,11 @@ import AppWeatherDataTable from "./components/AppWeatherDataTable";
 import AppError from "./components/AppError";
 export default {
   name: "App",
-
   components: {
     AppSearch,
     AppWeatherDataTable,
     AppError,
   },
-
   data() {
     return {
       cityData: {}, // данные первого запроса
@@ -58,11 +56,9 @@ export default {
       this.isShowTable = true;
       this.isWeatherDataLoading = true;
       this.isNotExistCity = false;
-
       // чистим данные перед запросом
       this.cityData = {};
       this.sevenDaysForecast = [];
-
       // первый запрос чтобы получить координаты города,
       // и по нему идёт второй запрос о погоде на 7 дней, т.к api на 10 платное
       apiClient
