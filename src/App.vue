@@ -16,7 +16,7 @@
           v-if="isShowTable"
           :forecasts-data="sevenDaysForecast"
           :is-weather-loading="isWeatherDataLoading"
-          :city="cityData"
+          :city="cityName"
           :background="backgroundCity"
         ></app-weather-data-table>
         <app-error v-if="isNotExistCity"></app-error>
@@ -25,67 +25,62 @@
   </v-app>
 </template>
 
-<script>
-import AppSearch from "./components/AppSearch";
-import apiClient from "./api";
-import AppWeatherDataTable from "./components/AppWeatherDataTable";
-import AppError from "./components/AppError";
-export default {
-  name: "App",
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
 
+import AppSearch from "./components/AppSearch.vue";
+import apiClient from "./api";
+import AppWeatherDataTable from "./components/AppWeatherDataTable.vue";
+import AppError from "./components/AppError.vue";
+@Component({
   components: {
     AppSearch,
-    AppWeatherDataTable,
     AppError,
+    AppWeatherDataTable,
   },
+})
+export default class App extends Vue {
+  cityName: string = "";
+  sevenDaysForecast: Array<Object> = []; // данные прогноза
+  isNotExistCity: boolean = false; // флаг ошибки
+  isWeatherDataLoading: boolean = false; // флаг загрузки
+  isShowTable: boolean = false; // флаг показа таблицы при первом запуске
+  backgroundCity: string = "";
 
-  data() {
-    return {
-      cityData: {}, // данные первого запроса
-      sevenDaysForecast: [], // данные прогноза
-      isNotExistCity: false, // флаг ошибки
-      isWeatherDataLoading: false, // флаг загрузки
-      isShowTable: false, // флаг показа таблицы при первом запуске
-      backgroundCity: "",
-    };
-  },
-  methods: {
-    getForecast(cityName) {
-      if (!cityName.length) {
-        return;
-      }
-      // меняем флаги
-      this.isShowTable = true;
-      this.isWeatherDataLoading = true;
-      this.isNotExistCity = false;
-
-      // чистим данные перед запросом
-      this.cityData = {};
-      this.sevenDaysForecast = [];
-
-      // первый запрос чтобы получить координаты города,
-      // и по нему идёт второй запрос о погоде на 7 дней, т.к api на 10 платное
-      apiClient
-        .getWeatherCurrent(cityName)
-        .then((response) => {
-          this.cityData = response.data;
-        })
-        .then(() => {
-          apiClient
-            .oneCallForecast(this.cityData.coord.lat, this.cityData.coord.lon)
-            .then((response) => {
-              this.isWeatherDataLoading = false;
-              this.sevenDaysForecast = response.data.daily;
-            });
-        })
-        .catch(() => {
-          this.isNotExistCity = true;
-          this.isShowTable = false;
-          this.isWeatherDataLoading = false;
-        });
-    },
-  },
-};
+  getForecast(cityName: string): void {
+    if (!cityName.length) {
+      return;
+    }
+    // меняем флаги
+    this.isShowTable = true;
+    this.isWeatherDataLoading = true;
+    this.isNotExistCity = false;
+    // чистим данные перед запросом
+    this.cityName = "";
+    this.sevenDaysForecast = [];
+    // первый запрос чтобы получить координаты города,
+    // и по нему идёт второй запрос о погоде на 7 дней, т.к api на 10 платное
+    apiClient
+      .getWeatherCurrent(cityName)
+      .then((response) => {
+        this.cityName = response.data.name;
+        return response;
+      })
+      .then((response) => {
+        apiClient
+          .oneCallForecast(response.data.coord.lat, response.data.coord.lon)
+          .then((response) => {
+            this.isWeatherDataLoading = false;
+            this.sevenDaysForecast = response.data.daily;
+          });
+      })
+      .catch(() => {
+        this.isNotExistCity = true;
+        this.isShowTable = false;
+        this.isWeatherDataLoading = false;
+      });
+  }
+}
 </script>
 
 <style scoped>

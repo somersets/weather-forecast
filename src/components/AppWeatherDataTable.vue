@@ -4,7 +4,7 @@
     :loading="isWeatherLoading"
     loading-text="Loading... Please wait"
     :items-per-page="10"
-    :headers="getHeaders"
+    :headers="getTableHeaders"
     :items="forecastsData"
     item-key="dt"
     show-expand
@@ -30,7 +30,7 @@
     <template v-slot:top>
       <v-app-bar src="https://picsum.photos/1920/1080?random">
         <h2 class="white--text">
-          {{ city.name }}
+          {{ city }}
         </h2>
       </v-app-bar>
     </template>
@@ -62,115 +62,87 @@
   </v-data-table>
 </template>
 
-<script>
-export default {
-  name: "AppWeatherDataTable",
-  data() {
-    return {};
-  },
-  props: {
-    isWeatherLoading: {
-      type: Boolean,
-      required: true,
-    },
-    forecastsData: {
-      type: Array,
-      required: true,
-    },
-    city: {
-      type: Object,
-      required: true,
-    },
-    background: {
-      type: String,
-      required: true,
-    },
-  },
-  computed: {
-    getOptionsDate() {
-      // настройки для формата даты
-      return {
-        weekday: "short",
-        month: "short",
-        day: "2-digit",
-      };
-    },
-    getHeaders() {
-      return [
-        {
-          text: "Дата",
-          align: "start",
-          sortable: false,
-          value: "dt",
-        },
-        { text: "Погода", value: "weather" },
-        { text: "Температура", value: "tempMinMax" },
-        { text: "Скорость ветра, м/c", value: "wind_speed" },
-        { text: "Направление ветра, м/c", value: "wind_deg" },
-        { text: "Давление, мм рт. ст.", value: "pressure" },
-        { text: "Влажность, %", value: "humidity" },
-        { text: "Облачность, %", value: "clouds" },
-        { text: "Вероятность выпадения осадков, %", value: "pop" },
-        { text: "Объем осадков, мм", value: "rain" },
-      ];
-    },
-  },
-  methods: {
-    normalizeMinMaxTemp(min, max) {
-      // добавление знака плюс и минус в зависимости от температуры
-      // меньше или больше 0 и т.д.
-      if (min > 0 && max > 0) {
-        return `+${min.toFixed(0)}...+${max.toFixed(0)}`;
-      } else if (min < 0 && max > 0) {
-        return `-${min.toFixed(0)}...+${max.toFixed(0)}`;
-      } else {
-        return `-${min.toFixed(0)}...-${max.toFixed(0)}`;
-      }
-    },
-    normalizeDateFormat(timestamp) {
-      // перевод из UNIX в читабельный формат
-      return new Date(timestamp * 1000).toLocaleTimeString(
-        "ru-ru",
-        this.getOptionsDate
-      );
-    },
-    normalizeProbability(pop) {
-      // преобразовывает десятичный коэффициент вероятности исхода в проценты
-      return (pop * 100).toFixed(0);
-    },
-    getFeelLikesTemperatureDuringTheDay(temp, index) {
-      const partsDay = {
-        day: "Днём",
-        night: "Ночью",
-        morn: "Утром",
-        eve: "Вечером",
-      };
-      return `${partsDay[index]} ${this.getCorrectTempSign(temp.toFixed(0))}`;
-    },
-    getSideArrows(deg) {
-      if ((deg >= 0 && deg <= 10) || deg >= 350) {
-        return `${deg}&deg С &darr;`;
-      } else if (deg > 10 && deg < 80) {
-        return `${deg}&deg СВ &#x2199;`;
-      } else if (deg >= 80 && deg <= 100) {
-        return `${deg}&deg В &larr;`;
-      } else if (deg > 100 && deg < 170) {
-        return `${deg}&deg ЮВ &#x2196;`;
-      } else if (deg >= 170 && deg <= 190) {
-        return `${deg}&deg Ю &uarr;`;
-      } else if (deg > 190 && deg < 260) {
-        return `${deg}&deg ЮЗ &#x2197;`;
-      } else if (deg >= 260 && deg <= 280) {
-        return `${deg}&deg З &rarr;`;
-      } else if (deg > 280 && deg < 350) {
-        return `${deg}&deg СЗ &#x2198;`;
-      }
-    },
-    getCorrectTempSign(temp) {
-      return temp > 0 ? `+${temp}` : `-${temp}`;
-    },
-  },
-};
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import ITableData from "@/types/types";
+import sideArrows from "@/enums";
+@Component({})
+export default class AppWeatherDataTable extends Vue {
+  @Prop({ required: true }) readonly isWeatherLoading!: boolean;
+  @Prop({ required: true, default: [] }) readonly forecastsData!: Array<Object>;
+  @Prop({ required: true, default: "" }) readonly city!: string;
+  @Prop() readonly background!: String;
+
+  normalizeMinMaxTemp(min: number, max: number): string {
+    // добавление знака плюс и минус в зависимости от температуры
+    // меньше или больше 0 и т.д.
+    if (min > 0 && max > 0) {
+      return `+${min.toFixed(0)}...+${max.toFixed(0)}`;
+    } else if (min < 0 && max > 0) {
+      return `-${min.toFixed(0)}...+${max.toFixed(0)}`;
+    } else {
+      return `-${min.toFixed(0)}...-${max.toFixed(0)}`;
+    }
+  }
+
+  normalizeDateFormat(timestamp: number): string {
+    // перевод из UNIX в читабельный формат
+    return new Date(timestamp * 1000).toLocaleTimeString(
+      "ru-ru",
+      this.getOptionsDate
+    );
+  }
+
+  normalizeProbability(pop: number): string {
+    // преобразовывает десятичный коэффициент вероятности исхода в проценты
+    return (pop * 100).toFixed(0);
+  }
+
+  getFeelLikesTemperatureDuringTheDay(temp: number, index: number): any {
+    const partsDay: { [index: string]: string } = {
+      day: "Днём",
+      night: "Ночью",
+      morn: "Утром",
+      eve: "Вечером",
+    };
+    return `${partsDay[index]} ${this.getCorrectTempSign(temp.toFixed(0))}`;
+  }
+
+  getSideArrows(deg: number): string {
+    return `${deg}${sideArrows[(deg / 45) | 0]}`;
+  }
+
+  getCorrectTempSign(temp: number | string): string {
+    return temp > 0 ? `+${temp}` : `-${temp}`;
+  }
+
+  get getOptionsDate(): Object {
+    return {
+      weekday: "short",
+      month: "short",
+      day: "2-digit",
+    };
+  }
+  get getTableHeaders(): Array<ITableData> {
+    return [
+      {
+        text: "Дата",
+        align: "start",
+        sortable: false,
+        value: "dt",
+      },
+      { text: "Погода", value: "weather" },
+      { text: "Температура", value: "tempMinMax" },
+      { text: "Скорость ветра, м/c", value: "wind_speed" },
+      { text: "Направление ветра, м/c", value: "wind_deg" },
+      { text: "Давление, мм рт. ст.", value: "pressure" },
+      { text: "Влажность, %", value: "humidity" },
+      { text: "Облачность, %", value: "clouds" },
+      { text: "Вероятность выпадения осадков, %", value: "pop" },
+      { text: "Объем осадков, мм", value: "rain" },
+    ];
+  }
+}
 </script>
 
 <style scoped></style>

@@ -3,7 +3,7 @@
     <v-text-field
       class="flex flex-grow-0"
       v-model="cityName"
-      v-on:keyup.enter="get"
+      @keyup.enter="get"
       prepend-icon="mdi-city-variant-outline"
       label="Введите город..."
       :rules="rules"
@@ -17,32 +17,25 @@
   </div>
 </template>
 
-<script>
-import AppSearchButton from "./AppSearchButton";
-
-export default {
-  name: "AppSearchField",
+<script lang="ts">
+import AppSearchButton from "./AppSearchButton.vue";
+import { Component, Prop, Vue } from "vue-property-decorator";
+@Component({
   components: {
     AppSearchButton,
   },
-  props: {
-    isWeatherLoading: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      cityName: "",
-      rules: [(val) => (val || "").length > 0 || "Заполните поле"], // валидация поля
-    };
-  },
-  methods: {
-    get() {
-      this.$emit("get-forecast", this.cityName);
-    },
-  },
-};
+})
+export default class extends Vue {
+  @Prop({ required: true }) readonly isWeatherLoading!: boolean;
+  cityName: string = "";
+  rules: Array<any> = [
+    (val: string) => (val || "").length > 0 || "Заполните поле",
+  ];
+
+  get() {
+    this.$emit("get-forecast", this.cityName);
+  }
+}
 </script>
 
 <style scoped></style>
