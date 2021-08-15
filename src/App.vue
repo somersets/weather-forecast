@@ -3,7 +3,7 @@
     <v-app-bar app color="blue accent-4">
       <h1 class="white--text">
         <v-icon large color="white">mdi-weather-cloudy</v-icon>
-        WeatherForecast
+        Прогноз погоды на 7 дней
       </h1>
     </v-app-bar>
     <v-container>
