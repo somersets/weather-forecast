@@ -64,6 +64,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import ITableData from "@/types/types";
+import sideArrows from "@/enums";
 @Component({})
 export default class AppWeatherDataTable extends Vue {
   @Prop({ required: true }) readonly isWeatherLoading!: boolean;
@@ -107,25 +109,7 @@ export default class AppWeatherDataTable extends Vue {
   }
 
   getSideArrows(deg: number): string {
-    if ((deg >= 0 && deg <= 10) || deg >= 350) {
-      return `${deg}&deg С &darr;`;
-    } else if (deg > 10 && deg < 80) {
-      return `${deg}&deg СВ &#x2199;`;
-    } else if (deg >= 80 && deg <= 100) {
-      return `${deg}&deg В &larr;`;
-    } else if (deg > 100 && deg < 170) {
-      return `${deg}&deg ЮВ &#x2196;`;
-    } else if (deg >= 170 && deg <= 190) {
-      return `${deg}&deg Ю &uarr;`;
-    } else if (deg > 190 && deg < 260) {
-      return `${deg}&deg ЮЗ &#x2197;`;
-    } else if (deg >= 260 && deg <= 280) {
-      return `${deg}&deg З &rarr;`;
-    } else if (deg > 280 && deg < 350) {
-      return `${deg}&deg СЗ &#x2198;`;
-    } else {
-      return "";
-    }
+    return `${deg}${sideArrows[(deg / 45) | 0]}`;
   }
 
   getCorrectTempSign(temp: number | string): string {
@@ -139,7 +123,7 @@ export default class AppWeatherDataTable extends Vue {
       day: "2-digit",
     };
   }
-  get getTableHeaders(): Array<Object> {
+  get getTableHeaders(): Array<ITableData> {
     return [
       {
         text: "Дата",
