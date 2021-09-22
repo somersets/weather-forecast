@@ -12,8 +12,16 @@
     <template v-slot:item.dt="{ item }">
       {{ normalizeDateFormat(item.dt) }}
     </template>
-    <template v-slot:item.weather="{ item }">
-      {{ item.weather[0].description }}
+    <template v-slot:item.weather="{ item }" class="weather-desc">
+      <div class="weather-desc">
+        <img
+          width="50px"
+          height="50px"
+          :src="`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`"
+          alt="weather-icon"
+        />
+        <div>{{ item.weather[0].description }}</div>
+      </div>
     </template>
     <template v-slot:item.tempMinMax="{ item }">
       {{ normalizeMinMaxTemp(item.temp.min, item.temp.max) }}
@@ -69,7 +77,7 @@ import sideArrows from "@/enums";
 @Component({})
 export default class AppWeatherDataTable extends Vue {
   @Prop({ required: true }) readonly isWeatherLoading!: boolean;
-  @Prop({ required: true, default: [] }) readonly forecastsData!: Array<Object>;
+  @Prop({ required: true, default: [] }) readonly forecastsData!: Array<object>;
   @Prop({ required: true, default: "" }) readonly city!: string;
   @Prop() readonly background!: String;
 
@@ -98,7 +106,7 @@ export default class AppWeatherDataTable extends Vue {
     return (pop * 100).toFixed(0);
   }
 
-  getFeelLikesTemperatureDuringTheDay(temp: number, index: number): any {
+  getFeelLikesTemperatureDuringTheDay(temp: number, index: number): string {
     const partsDay: { [index: string]: string } = {
       day: "Днём",
       night: "Ночью",
@@ -116,7 +124,7 @@ export default class AppWeatherDataTable extends Vue {
     return temp > 0 ? `+${temp}` : `-${temp}`;
   }
 
-  get getOptionsDate(): Object {
+  get getOptionsDate(): object {
     return {
       weekday: "short",
       month: "short",
@@ -131,15 +139,56 @@ export default class AppWeatherDataTable extends Vue {
         sortable: false,
         value: "dt",
       },
-      { text: "Погода", value: "weather" },
-      { text: "Температура", value: "tempMinMax" },
-      { text: "Скорость ветра, м/c", value: "wind_speed" },
-      { text: "Направление ветра, м/c", value: "wind_deg" },
-      { text: "Давление, мм рт. ст.", value: "pressure" },
-      { text: "Влажность, %", value: "humidity" },
-      { text: "Облачность, %", value: "clouds" },
-      { text: "Вероятность выпадения осадков, %", value: "pop" },
-      { text: "Объем осадков, мм", value: "rain" },
+      { text: "Погода", value: "weather", sortable: false, align: "center" },
+      {
+        text: "Температура",
+        value: "tempMinMax",
+        sortable: false,
+        align: "center",
+      },
+      {
+        text: "Скорость ветра, м/c",
+        value: "wind_speed",
+        sortable: false,
+        align: "center",
+      },
+      {
+        text: "Направление ветра, м/c",
+        value: "wind_deg",
+        sortable: false,
+        align: "center",
+      },
+      {
+        text: "Давление, мм рт. ст.",
+        value: "pressure",
+        sortable: false,
+        align: "center",
+      },
+      {
+        text: "Влажность, %",
+        value: "humidity",
+        sortable: false,
+        align: "center",
+      },
+      {
+        text: "Облачность, %",
+        value: "clouds",
+        sortable: false,
+        align: "center",
+      },
+      {
+        text: "Вероятность выпадения осадков, %",
+        value: "pop",
+        align: "center",
+        sortable: false,
+      },
+      {
+        text: "Объем осадков, мм",
+        value: "rain",
+        sortable: false,
+
+        align: "center",
+      },
     ];
   }
 }

@@ -41,7 +41,7 @@ import AppError from "./components/AppError.vue";
 })
 export default class App extends Vue {
   cityName: string = "";
-  sevenDaysForecast: Array<Object> = []; // данные прогноза
+  sevenDaysForecast: Array<object> = []; // данные прогноза
   isNotExistCity: boolean = false; // флаг ошибки
   isWeatherDataLoading: boolean = false; // флаг загрузки
   isShowTable: boolean = false; // флаг показа таблицы при первом запуске
@@ -71,6 +71,7 @@ export default class App extends Vue {
           .oneCallForecast(response.data.coord.lat, response.data.coord.lon)
           .then((response) => {
             this.isWeatherDataLoading = false;
+            console.log(response.data);
             this.sevenDaysForecast = response.data.daily;
           });
       })
