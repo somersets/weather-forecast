@@ -73,7 +73,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import ITableData from "@/types/types";
-import sideArrows from "@/enums";
+import sideArrows from "@/utils/enums";
 @Component({})
 export default class AppWeatherDataTable extends Vue {
   @Prop({ required: true }) readonly isWeatherLoading!: boolean;

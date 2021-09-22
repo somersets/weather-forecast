@@ -29,7 +29,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
 import AppSearch from "./components/AppSearch.vue";
-import apiClient from "./api";
+import apiClient from "./services/api";
 import AppWeatherDataTable from "./components/AppWeatherDataTable.vue";
 import AppError from "./components/AppError.vue";
 @Component({
