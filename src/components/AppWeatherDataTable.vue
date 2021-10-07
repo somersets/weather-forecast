@@ -44,19 +44,19 @@
     </template>
     <template v-slot:expanded-item="{ items, item }">
       <td></td>
-      <td>
-        Утром:
-        {{ getCorrectTempSign(item.temp.morn) }}
-        <br />
-        Днем:
-        {{ getCorrectTempSign(item.temp.day) }}
+      <td
+        v-for="tmp of getTemperatureDuringFirstHalf(items, item.temp)"
+        :key="tmp.name"
+      >
+        {{ tmp.name }}
+        {{ tmp.temperature }}
       </td>
-      <td>
-        Вечером:
-        {{ getCorrectTempSign(item.temp.eve) }}
-        <br />
-        Ночью:
-        {{ getCorrectTempSign(item.temp.night) }}
+      <td
+        v-for="tmp of getTemperatureDuringSecondHalf(items, item.temp)"
+        :key="tmp.name"
+      >
+        {{ tmp.name }}
+        {{ tmp.temperature }}
       </td>
       <td>Ощущается:</td>
       <td v-for="(tmp, index) in item.feels_like" :key="index">
@@ -108,20 +108,51 @@ export default class AppWeatherDataTable extends Vue {
 
   getFeelLikesTemperatureDuringTheDay(temp: number, index: number): string {
     const partsDay: { [index: string]: string } = {
-      day: "Днём",
-      night: "Ночью",
-      morn: "Утром",
-      eve: "Вечером",
+      day: "Днём:",
+      night: "Ночью:",
+      morn: "Утром:",
+      eve: "Вечером:",
     };
-    return `${partsDay[index]} ${this.getCorrectTempSign(temp.toFixed(0))}`;
+    return `${partsDay[index]} ${this.getCorrectTempSign(temp)}`;
   }
 
   getSideArrows(deg: number): string {
     return `${deg}${sideArrows[(deg / 45) | 0]}`;
   }
 
-  getCorrectTempSign(temp: number | string): string {
-    return temp > 0 ? `+${temp}` : `-${temp}`;
+  getCorrectTempSign(temp: number): string {
+    if (temp > 0) {
+      return `+${temp.toFixed(0)}`;
+    } else if (temp < 0) {
+      return `${temp.toFixed(0)}`;
+    } else {
+      return temp.toFixed(0);
+    }
+  }
+
+  getTemperatureDuringFirstHalf(items: Array<object>, temp: any) {
+    return [
+      {
+        name: "Утром:",
+        temperature: this.getCorrectTempSign(temp.morn),
+      },
+      {
+        name: "Днем:",
+        temperature: this.getCorrectTempSign(temp.day),
+      },
+    ];
+  }
+  getTemperatureDuringSecondHalf(items: Array<object>, temp: any) {
+    return [
+      {
+        name: "Вечером:",
+        temperature: this.getCorrectTempSign(temp.eve),
+      },
+      {
+        name: "Ночью:",
+        temperature: this.getCorrectTempSign(temp.night),
+      },
+    ];
   }
 
   get getOptionsDate(): object {
@@ -194,4 +225,14 @@ export default class AppWeatherDataTable extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.v-data-table__expanded,
+.v-data-table__expanded__content, {
+  td:not(:last-child) {
+    white-space: nowrap;
+  }
+}
+th {
+  white-space: nowrap;
+}
+</style>

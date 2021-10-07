@@ -48,18 +48,14 @@ export default class App extends Vue {
   backgroundCity: string = "";
 
   getForecast(cityName: string): void {
-    if (!cityName.length) {
-      return;
-    }
-    // меняем флаги
+    if (!cityName.length) return;
+
     this.isShowTable = true;
     this.isWeatherDataLoading = true;
     this.isNotExistCity = false;
-    // чистим данные перед запросом
-    this.cityName = "";
-    this.sevenDaysForecast = [];
-    // первый запрос чтобы получить координаты города,
-    // и по нему идёт второй запрос о погоде на 7 дней, т.к api на 10 платное
+
+    this.clearDataBeforeRequest();
+
     apiClient
       .getWeatherCurrent(cityName)
       .then((response) => {
@@ -80,6 +76,11 @@ export default class App extends Vue {
         this.isShowTable = false;
         this.isWeatherDataLoading = false;
       });
+  }
+
+  clearDataBeforeRequest() {
+    this.cityName = "";
+    this.sevenDaysForecast = [];
   }
 }
 </script>
