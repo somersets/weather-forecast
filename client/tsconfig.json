@@ -13,6 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "noImplicitAny": false,
     "outDir": "build",
     "types": [
       "vuetify",
@@ -30,6 +31,8 @@
       "scripthost"
     ]
   },
+  "types": [ "node" ],
+  "typeRoots": [ "../node_modules/@types" ],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
@@ -39,5 +42,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
+  ]
 }
