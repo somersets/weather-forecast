@@ -13,7 +13,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class extends Vue {
+export default class SearchForecastButton extends Vue {
   @Prop({ required: true }) readonly isWeatherLoading!: boolean;
   @Prop({ required: true }) readonly disabled!: boolean;
 }

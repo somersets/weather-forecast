@@ -8,17 +8,18 @@
     </v-app-bar>
     <v-container>
       <v-main>
-        <app-search
+        <search-forecast
           :is-weather-loading="isWeatherDataLoading"
           @get-forecast="getForecast"
-        ></app-search>
-        <app-weather-data-table
+        ></search-forecast>
+        <weather-dashboard :data-forecasts="sevenDaysForecast" :city-name="cityName" ></weather-dashboard>
+        <!--        <app-weather-data-table
           v-if="isShowTable"
           :forecasts-data="sevenDaysForecast"
           :is-weather-loading="isWeatherDataLoading"
           :city="cityName"
           :background="backgroundCity"
-        ></app-weather-data-table>
+        ></app-weather-data-table>-->
         <app-error v-if="isNotExistCity"></app-error>
       </v-main>
     </v-container>
@@ -28,15 +29,17 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import AppSearch from "./components/AppSearch.vue";
 import apiClient from "./services/api";
 import AppWeatherDataTable from "./components/AppWeatherDataTable.vue";
+import WeatherDashboard from "./components/WeatherDashboard.vue";
 import AppError from "./components/AppError.vue";
+import SearchForecast from "@/components/SearchForecast.vue";
 @Component({
   components: {
-    AppSearch,
+    SearchForecast,
     AppError,
     AppWeatherDataTable,
+    WeatherDashboard,
   },
 })
 export default class App extends Vue {
@@ -44,7 +47,7 @@ export default class App extends Vue {
   sevenDaysForecast: Array<object> = []; // данные прогноза
   isNotExistCity: boolean = false; // флаг ошибки
   isWeatherDataLoading: boolean = false; // флаг загрузки
-  isShowTable: boolean = false; // флаг показа таблицы при первом запуске
+  isShowTable: boolean = true; // флаг показа таблицы при первом запуске
   backgroundCity: string = "";
 
   getForecast(cityName: string): void {
@@ -59,6 +62,7 @@ export default class App extends Vue {
     apiClient
       .getWeatherCurrent(cityName)
       .then((response) => {
+        console.log(response.data);
         this.cityName = response.data.name;
         return response;
       })
@@ -67,8 +71,9 @@ export default class App extends Vue {
           .oneCallForecast(response.data.coord.lat, response.data.coord.lon)
           .then((response) => {
             this.isWeatherDataLoading = false;
-            console.log(response.data);
             this.sevenDaysForecast = response.data.daily;
+            console.log(response.data);
+            console.log(this.sevenDaysForecast);
           });
       })
       .catch(() => {
@@ -85,8 +90,13 @@ export default class App extends Vue {
 }
 </script>
 
-<style scoped>
-/deep/ .v-text-field {
-  flex-basis: 40%;
+<style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap");
+* {
+  font-family: "Montserrat", sans-serif;
+  color: #000;
+}
+
+html, body {
 }
 </style>
