@@ -9,23 +9,23 @@
       :rules="rules"
     >
     </v-text-field>
-    <app-search-button
+    <search-forecast-button
       @clickGetForecast="get"
       :is-weather-loading="isWeatherLoading"
       :disabled="!!cityName.length"
-    ></app-search-button>
+    ></search-forecast-button>
   </div>
 </template>
 
 <script lang="ts">
-import AppSearchButton from "./AppSearchButton.vue";
+import SearchForecastButton from "./SearchForecastButton.vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
 @Component({
   components: {
-    AppSearchButton,
+    SearchForecastButton,
   },
 })
-export default class extends Vue {
+export default class SearchForecast extends Vue {
   @Prop({ required: true }) readonly isWeatherLoading!: boolean;
   cityName: string = "";
   rules: Array<any> = [
@@ -38,4 +38,8 @@ export default class extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.v-text-field {
+  flex-basis: 40%;
+}
+</style>
