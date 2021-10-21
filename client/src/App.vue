@@ -1,25 +1,17 @@
 <template>
   <v-app>
-    <v-app-bar app color="blue accent-4">
-      <h1 class="white--text">
-        <v-icon large color="white">mdi-weather-cloudy</v-icon>
-        Прогноз погоды на 7 дней
-      </h1>
-    </v-app-bar>
+    <app-header></app-header>
     <v-container>
       <v-main>
         <search-forecast
           :is-weather-loading="isWeatherDataLoading"
           @get-forecast="getForecast"
         ></search-forecast>
-        <weather-dashboard :data-forecasts="sevenDaysForecast" :city-name="cityName" ></weather-dashboard>
-        <!--        <app-weather-data-table
-          v-if="isShowTable"
-          :forecasts-data="sevenDaysForecast"
-          :is-weather-loading="isWeatherDataLoading"
-          :city="cityName"
-          :background="backgroundCity"
-        ></app-weather-data-table>-->
+        <weather-dashboard
+          v-if="!isNotExistCity"
+          :data-forecasts="sevenDaysForecast"
+          :city-name="cityName"
+        ></weather-dashboard>
         <app-error v-if="isNotExistCity"></app-error>
       </v-main>
     </v-container>
@@ -30,16 +22,16 @@
 import { Component, Vue } from "vue-property-decorator";
 
 import apiClient from "./services/api";
-import AppWeatherDataTable from "./components/AppWeatherDataTable.vue";
 import WeatherDashboard from "./components/dashboard/WeatherDashboard.vue";
+import AppHeader from "./components/base/AppHeader.vue";
 import AppError from "./components/base/AppError.vue";
 import SearchForecast from "@/components/searchForecast/SearchForecast.vue";
 @Component({
   components: {
     SearchForecast,
     AppError,
-    AppWeatherDataTable,
     WeatherDashboard,
+    AppHeader,
   },
 })
 export default class App extends Vue {
@@ -97,6 +89,7 @@ export default class App extends Vue {
   color: #000;
 }
 
-html, body {
+html,
+body {
 }
 </style>

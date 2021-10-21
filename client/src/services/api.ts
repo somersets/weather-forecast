@@ -1,4 +1,6 @@
 import axios from "axios";
+import $i18n from "@/i18n/i18n";
+// const lang = window.navigator.language.slice(0, 2) || "en";
 // небольшая прослойка для запросов
 
 const apiClient = axios.create({
@@ -27,17 +29,15 @@ apiClient.interceptors.response.use(
 
 export default {
   async getWeatherCurrent(city: string, units: string = "metric") {
-    return await apiClient.get(`weather?q=${city}&units=${units}&lang=ru`);
+    return await apiClient.get(`weather?q=${city}&units=${units}&lang=${$i18n.locale}`);
   },
   async oneCallForecast(
     lat: number,
     lon: number,
     units: string = "metric"
   ): Promise<any> {
-    const lang = window.navigator.language.slice(0, 2) || "en";
-    console.log(lang);
     return await apiClient.get(
-      `onecall?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&exclude=minutely,hourly,alerts,current`
+      `onecall?lat=${lat}&lon=${lon}&units=${units}&lang=${$i18n.locale}&exclude=minutely,hourly,alerts,current`
     );
   },
 };

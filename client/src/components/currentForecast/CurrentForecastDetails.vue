@@ -23,30 +23,44 @@
         <img src="../../assets/temp.svg" alt="" />
       </div>
       <div class="parameter__name mr-5 blue-grey--text lighten-2">
-        Температура
+        {{ $t("currentForecastDetails.temp") }}
       </div>
-      <div class="parameter__value">{{ forecastDetails.maxTemp }}° - ощущается как {{ forecastDetails.feels_like }}°</div>
+      <div class="parameter__value">
+        {{ forecastDetails.maxTemp }}° -
+        {{ $t("currentForecastDetails.feels_like") }}
+        {{ forecastDetails.feels_like }}°
+      </div>
     </v-card-text>
     <v-card-text class="d-flex align-center parameter pa-0">
       <div class="parameter__parameter-icon mr-5">
         <img src="../../assets/pressure.png" alt="" />
       </div>
-      <div class="parameter__name mr-5 blue-grey--text lighten-2">Давление</div>
-      <div class="parameter__value">{{ (forecastDetails.pressure / 1.333).toFixed(0) }} мм ртутного столба - нормальное</div>
+      <div class="parameter__name mr-5 blue-grey--text lighten-2">
+        {{ $t("currentForecastDetails.pressure.name") }}
+      </div>
+      <div class="parameter__value">
+        {{ (forecastDetails.pressure / 1.333).toFixed(0) }}
+        {{ $t("currentForecastDetails.pressure.pressureInMM") }} - {{ $t("currentForecastDetails.pressure.status") }}
+      </div>
     </v-card-text>
     <v-card-text class="d-flex align-center parameter pa-0">
       <div class="parameter__parameter-icon mr-5">
         <img src="../../assets/precipitation.svg" alt="" />
       </div>
-      <div class="parameter__name mr-5 blue-grey--text lighten-2">Осадки</div>
+      <div class="parameter__name mr-5 blue-grey--text lighten-2">
+        {{ $t("currentForecastDetails.precipitation") }}
+      </div>
       <div class="parameter__value">Без осадков</div>
     </v-card-text>
     <v-card-text class="d-flex align-center parameter pa-0">
       <div class="parameter__parameter-icon mr-5">
         <img src="../../assets/wind.svg" alt="" />
       </div>
-      <div class="parameter__name mr-5 blue-grey--text lighten-2">Ветер</div>
-      <div class="parameter__value">{{ forecastDetails.wind_speed }} м/с,
+      <div class="parameter__name mr-5 blue-grey--text lighten-2">
+        {{ $t("currentForecastDetails.wind") }}
+      </div>
+      <div class="parameter__value">
+        {{ forecastDetails.wind_speed }} м/с,
         <span v-html="getSideArrows(forecastDetails.wind_deg)"></span>
         - {{ getCategorySpeed(forecastDetails.wind_speed) }}
       </div>
@@ -57,6 +71,8 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import enums from "@/utils/enums";
+import checkLocale from "@/utils/checkLocale";
+
 @Component({
   name: "CurrentForecastDetails",
 })
@@ -64,17 +80,25 @@ export default class CurrentForecastDetails extends Vue {
   @Prop({ required: true }) readonly forecastDetails;
 
   getSideArrows(deg: number): string {
-    return `${deg}${enums.sideArrows[(deg / 45) | 0]}`;
+    const locales = [
+      { code: "ru", locale: `${deg}${enums.sideArrowsRu[(deg / 45) | 0]}` },
+      { code: "en", locale: `${deg}${enums.sideArrowsEng[(deg / 45) | 0]}` },
+    ];
+    return checkLocale(this.$i18n.locale, locales);
   }
   getCategorySpeed(windSpeed) {
-    for (let key in enums.categorySpeed) {
+    for (let key in enums.categorySpeedRu) {
       if (!Number.isNaN(Number(key))) {
         if (windSpeed < Number(key)) {
-          return enums.categorySpeed[key];
+          const locales = [
+            { code: "ru", locale: enums.categorySpeedRu[key] },
+            { code: "en", locale: enums.categorySpeedEng[key] },
+          ];
+          return checkLocale(this.$i18n.locale, locales);
         }
       }
     }
-    return enums.categorySpeed[windSpeed];
+    console.log(enums.categorySpeedRu[windSpeed]);
   }
 }
 </script>
