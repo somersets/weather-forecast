@@ -29,13 +29,29 @@
           {{ normalizeDateFormat(forecast.dt, getOptionsMonthAndDay) }}
         </div>
         <div class="forecast__icon">
-          <img :src="`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`" alt="" />
+          <img
+            :src="`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`"
+            alt=""
+          />
         </div>
-        <div class="text-h6 font-weight-medium forecast__temp-up">{{ normalizeTempSign(forecast.temp.max) }}</div>
-        <div class="forecast__temp-low blue-grey--text lighten-2">{{ normalizeTempSign(forecast.temp.min) }}</div>
+        <div class="text-h6 font-weight-medium forecast__temp-up">
+          {{ normalizeTempSign(forecast.temp.max) }}
+        </div>
+        <div class="forecast__temp-low blue-grey--text lighten-2">
+          {{ normalizeTempSign(forecast.temp.min) }}
+        </div>
         <v-tooltip bottom class="blue lighten-3">
           <template v-slot:activator="{ on, attrs }">
-            <div v-bind="attrs" v-on="on" class="forecast__sky blue-grey--text lighten-2 text-no-wrap text-truncate">
+            <div
+              v-bind="attrs"
+              v-on="on"
+              class="
+                forecast__sky
+                blue-grey--text
+                lighten-2
+                text-no-wrap text-truncate
+              "
+            >
               {{ forecast.weather[0].description }}
             </div>
           </template>
@@ -49,6 +65,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import enums from "@/utils/enums";
+import checkLocale from "@/utils/checkLocale";
 
 @Component({
   name: "WeatherForecasts",
@@ -61,9 +78,10 @@ export default class WeatherForecasts extends Vue {
     this.getCurrentForecastOnMounted();
   }
   getCurrentForecastOnMounted() {
+    const todayIndex = 0;
     this.$emit(
       "getCurrentForecast",
-      this.prepareCurrentForecast(null, this.dataForecasts[0])
+      this.prepareCurrentForecast(todayIndex, this.dataForecasts[0])
     );
   }
 
@@ -114,12 +132,19 @@ export default class WeatherForecasts extends Vue {
 
   normalizeDateFormat(timestamp: number, options: object): string {
     // перевод из UNIX в читабельный формат
-    return new Date(timestamp * 1000).toLocaleString("ru-ru", options);
+    return new Date(timestamp * 1000).toLocaleString(
+      `${this.$i18n.locale}-${this.$i18n.locale}`,
+      options
+    );
   }
 
   getCorrectedWeekDay(day, cb) {
+    const locales = [
+      { code: "ru", locale: enums.weekDaysRu[day] },
+      { code: "en", locale: enums.weekDaysEng[day] },
+    ];
     if (day === 0 || day === 1) {
-      return enums.weekDays[day];
+      return checkLocale(this.$i18n.locale, locales);
     } else {
       return cb;
     }
@@ -150,6 +175,7 @@ export default class WeatherForecasts extends Vue {
   background: rgba(71, 147, 255, 0.2);
   box-shadow: none !important;
   transition: 0.3s transform ease, 0.3s box-shadow ease;
+  user-select: none;
   .forecast-wrapper {
   }
   &:hover {
@@ -157,7 +183,8 @@ export default class WeatherForecasts extends Vue {
     transform: scale(1.05);
     box-shadow: 1px 3px 8px 2px rgba(0, 0, 0, 0.3) !important;
   }
-  &__day, &__sky {
+  &__day,
+  &__sky {
     &:first-letter {
       text-transform: uppercase;
     }
@@ -172,6 +199,6 @@ export default class WeatherForecasts extends Vue {
 }
 
 .v-tooltip__content {
-  background-color: #90CAF9;
+  background-color: #90caf9;
 }
 </style>
