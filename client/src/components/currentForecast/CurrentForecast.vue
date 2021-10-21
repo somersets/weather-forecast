@@ -12,7 +12,7 @@
         >
           {{ currentForecast.maxTemp }}
         </div>
-        <div class="current-temp-title__day text-h3 font-weight-medium mb-8">
+        <div class="current-temp-title__day text-h3 font-weight-medium mb-8 text-no-wrap">
           {{ currentForecast.day }}
         </div>
       </div>

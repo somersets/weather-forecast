@@ -113,7 +113,7 @@ export default class CurrentForecastDetails extends Vue {
   }
 }
 .parameter {
-  z-index: 1000;
+  z-index: 1;
   &:not(:last-child) {
     margin-bottom: 25px;
   }
