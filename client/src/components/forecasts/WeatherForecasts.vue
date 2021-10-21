@@ -29,10 +29,10 @@
           {{ normalizeDateFormat(forecast.dt, getOptionsMonthAndDay) }}
         </div>
         <div class="forecast__icon">
-          <img src="../assets/rainyandsunny-weather.png" alt="" />
+          <img :src="`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`" alt="" />
         </div>
-        <div class="text-h6 font-weight-medium forecast__temp-up">{{ normalizeMaxTemp(forecast.temp.max) }}</div>
-        <div class="forecast__temp-low blue-grey--text lighten-2">{{ normalizeMaxTemp(forecast.temp.min) }}</div>
+        <div class="text-h6 font-weight-medium forecast__temp-up">{{ normalizeTempSign(forecast.temp.max) }}</div>
+        <div class="forecast__temp-low blue-grey--text lighten-2">{{ normalizeTempSign(forecast.temp.min) }}</div>
         <v-tooltip bottom class="blue lighten-3">
           <template v-slot:activator="{ on, attrs }">
             <div v-bind="attrs" v-on="on" class="forecast__sky blue-grey--text lighten-2 text-no-wrap text-truncate">
@@ -81,42 +81,34 @@ export default class WeatherForecasts extends Vue {
       forecast.dt,
       this.getOptionsHourAndMinutes
     );
-    const maxTemp = this.normalizeMaxTemp(forecast.temp.max);
-    const temp = forecast.temp;
+    const maxTemp = this.normalizeTempSign(forecast.temp.max);
     const pressure = forecast.pressure;
     const wind_deg = forecast.wind_deg;
     const wind_speed = forecast.wind_speed.toFixed(0);
+    const feels_like = this.normalizeTempSign(forecast.feels_like.day);
+    const icon = forecast.weather[0].icon;
     return {
       currentForecast: {
         day,
         time,
         maxTemp,
+        icon,
       },
       forecastDetails: {
-        temp,
+        maxTemp,
         pressure,
         wind_deg,
         wind_speed,
+        feels_like,
       },
     };
   }
 
-  normalizeMaxTemp(max: number): string {
-    // добавление знака плюс и минус в зависимости от температуры
-    // меньше или больше 0 и т.д.
-    if (max > 0 || max === 0) {
-      return `+${max.toFixed(0)}`;
+  normalizeTempSign(temp: number): string {
+    if (temp >= 0) {
+      return `+${temp.toFixed(0)}`;
     } else {
-      return `-${max.toFixed(0)}`;
-    }
-  }
-  normalizeMinTemp(min: number): string {
-    // добавление знака плюс и минус в зависимости от температуры
-    // меньше или больше 0 и т.д.
-    if (min < 0) {
-      return `-${min.toFixed(0)}`;
-    } else {
-      return `+${min.toFixed(0)}`;
+      return `${temp.toFixed(0)}`;
     }
   }
 

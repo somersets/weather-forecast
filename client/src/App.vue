@@ -31,9 +31,9 @@ import { Component, Vue } from "vue-property-decorator";
 
 import apiClient from "./services/api";
 import AppWeatherDataTable from "./components/AppWeatherDataTable.vue";
-import WeatherDashboard from "./components/WeatherDashboard.vue";
-import AppError from "./components/AppError.vue";
-import SearchForecast from "@/components/SearchForecast.vue";
+import WeatherDashboard from "./components/dashboard/WeatherDashboard.vue";
+import AppError from "./components/base/AppError.vue";
+import SearchForecast from "@/components/searchForecast/SearchForecast.vue";
 @Component({
   components: {
     SearchForecast,

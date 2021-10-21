@@ -21,9 +21,9 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import CurrentForecast from "@/components/CurrentForecast.vue";
-import CurrentForecastDetails from "@/components/CurrentForecastDetails.vue";
-import WeatherForecasts from "@/components/WeatherForecasts.vue";
+import CurrentForecast from "@/components/currentForecast/CurrentForecast.vue";
+import CurrentForecastDetails from "@/components/currentForecast/CurrentForecastDetails.vue";
+import WeatherForecasts from "@/components/forecasts/WeatherForecasts.vue";
 @Component({
   name: "WeatherDashboard",
   components: {
