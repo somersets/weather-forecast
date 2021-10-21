@@ -34,8 +34,10 @@ export default {
     lon: number,
     units: string = "metric"
   ): Promise<any> {
+    const lang = window.navigator.language.slice(0, 2) || "en";
+    console.log(lang);
     return await apiClient.get(
-      `onecall?lat=${lat}&lon=${lon}&units=${units}&lang=ru&exclude=minutely,hourly,alerts,current`
+      `onecall?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&exclude=minutely,hourly,alerts,current`
     );
   },
 };

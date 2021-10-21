@@ -16,34 +16,34 @@
     "
   >
     <div class="cloud-back">
-      <img src="../assets/cloud-background.png" alt="" />
+      <img src="../../assets/cloud-background.png" alt="" />
     </div>
     <v-card-text class="d-flex align-center parameter pa-0">
       <div class="parameter__parameter-icon mr-5">
-        <img src="../assets/temp.svg" alt="" />
+        <img src="../../assets/temp.svg" alt="" />
       </div>
       <div class="parameter__name mr-5 blue-grey--text lighten-2">
         Температура
       </div>
-      <div class="parameter__value">{{ forecastDetails.temp.max.toFixed(0) }}° - ощущается как undefined</div>
+      <div class="parameter__value">{{ forecastDetails.maxTemp }}° - ощущается как {{ forecastDetails.feels_like }}°</div>
     </v-card-text>
     <v-card-text class="d-flex align-center parameter pa-0">
       <div class="parameter__parameter-icon mr-5">
-        <img src="../assets/pressure.png" alt="" />
+        <img src="../../assets/pressure.png" alt="" />
       </div>
       <div class="parameter__name mr-5 blue-grey--text lighten-2">Давление</div>
       <div class="parameter__value">{{ (forecastDetails.pressure / 1.333).toFixed(0) }} мм ртутного столба - нормальное</div>
     </v-card-text>
     <v-card-text class="d-flex align-center parameter pa-0">
       <div class="parameter__parameter-icon mr-5">
-        <img src="../assets/precipitation.svg" alt="" />
+        <img src="../../assets/precipitation.svg" alt="" />
       </div>
       <div class="parameter__name mr-5 blue-grey--text lighten-2">Осадки</div>
       <div class="parameter__value">Без осадков</div>
     </v-card-text>
     <v-card-text class="d-flex align-center parameter pa-0">
       <div class="parameter__parameter-icon mr-5">
-        <img src="../assets/wind.svg" alt="" />
+        <img src="../../assets/wind.svg" alt="" />
       </div>
       <div class="parameter__name mr-5 blue-grey--text lighten-2">Ветер</div>
       <div class="parameter__value">{{ forecastDetails.wind_speed }} м/с,

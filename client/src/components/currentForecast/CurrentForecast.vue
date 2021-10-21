@@ -15,7 +15,7 @@
         <div class="current-temp-title__day text-h3 font-weight-medium mb-8">{{ currentForecast.day }}</div>
       </div>
       <div>
-        <img src="../assets/sun.png" alt="" />
+        <img :src="`https://openweathermap.org/img/wn/${currentForecast.icon}@2x.png`" alt="" />
       </div>
     </v-card-text>
     <v-card-text class="current-temp-body pa-0">
@@ -41,7 +41,6 @@ export default class CurrentForecast extends Vue {
 
 <style lang="scss" scoped>
 .custom-card {
-  cursor: pointer;
 }
 
 .current-temp-title {
