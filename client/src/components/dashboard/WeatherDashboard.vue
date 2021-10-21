@@ -24,6 +24,8 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 import CurrentForecast from "@/components/currentForecast/CurrentForecast.vue";
 import CurrentForecastDetails from "@/components/currentForecast/CurrentForecastDetails.vue";
 import WeatherForecasts from "@/components/forecasts/WeatherForecasts.vue";
+import { ICurrentForecast, IForecast } from "../../types/types";
+
 @Component({
   name: "WeatherDashboard",
   components: {
@@ -33,10 +35,10 @@ import WeatherForecasts from "@/components/forecasts/WeatherForecasts.vue";
   },
 })
 export default class WeatherDashboard extends Vue {
-  @Prop({ required: true, type: Array }) readonly dataForecasts;
-  @Prop({ required: true, type: String }) readonly cityName;
+  @Prop({ required: true, type: Array }) readonly dataForecasts!: Array<IForecast>;
+  @Prop({ required: true, type: String }) readonly cityName!: string;
   forecast: object = {};
-  handleCurrentForecast(forecast) {
+  handleCurrentForecast(forecast: ICurrentForecast) {
     this.forecast = forecast;
     console.log(this.forecast);
   }

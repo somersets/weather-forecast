@@ -64,14 +64,15 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import enums from "@/utils/enums";
-import checkLocale from "@/utils/checkLocale";
+import enums from "../../utils/enums";
+import checkLocale from "../../utils/checkLocale";
+import { IForecast, ICurrentForecast } from "../../types/types";
 
 @Component({
   name: "WeatherForecasts",
 })
 export default class WeatherForecasts extends Vue {
-  @Prop({ required: true, type: Array }) dataForecasts;
+  @Prop({ required: true, type: Array }) dataForecasts!: Array<IForecast>;
   current: string | number = 0;
 
   mounted() {
@@ -81,16 +82,16 @@ export default class WeatherForecasts extends Vue {
     const todayIndex = 0;
     this.$emit(
       "getCurrentForecast",
-      this.prepareCurrentForecast(todayIndex, this.dataForecasts[0])
+      this.prepareCurrentForecast(todayIndex, this.dataForecasts[0] ?? {})
     );
   }
 
-  getCurrentForecast(index, forecast) {
+  getCurrentForecast(index: number, forecast: IForecast) {
     this.current = index;
     return this.prepareCurrentForecast(index, forecast);
   }
 
-  prepareCurrentForecast(index, forecast) {
+  prepareCurrentForecast(index: number, forecast: IForecast): ICurrentForecast {
     const day = this.getCorrectedWeekDay(
       index,
       this.normalizeDateFormat(forecast.dt, this.getOptionsWeekday)
@@ -138,7 +139,7 @@ export default class WeatherForecasts extends Vue {
     );
   }
 
-  getCorrectedWeekDay(day, cb) {
+  getCorrectedWeekDay(day: number, cb: any) {
     const locales = [
       { code: "ru", locale: enums.weekDaysRu[day] },
       { code: "en", locale: enums.weekDaysEng[day] },
@@ -150,18 +151,18 @@ export default class WeatherForecasts extends Vue {
     }
   }
 
-  get getOptionsMonthAndDay(): object {
+  get getOptionsMonthAndDay(): any {
     return {
       month: "short",
       day: "2-digit",
     };
   }
-  get getOptionsWeekday(): object {
+  get getOptionsWeekday(): any {
     return {
       weekday: "short",
     };
   }
-  get getOptionsHourAndMinutes(): object {
+  get getOptionsHourAndMinutes(): any {
     return {
       hour: "numeric",
       minute: "numeric",

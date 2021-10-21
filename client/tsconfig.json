@@ -1,46 +1,16 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 14",
+
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
+    "lib": ["es2020"],
+    "module": "commonjs",
+    "target": "es2020",
     "experimentalDecorators": true,
-    "allowJs": true,
-    "skipLibCheck": true,
+    "strict": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "noImplicitAny": false,
-    "outDir": "build",
-    "types": [
-      "vuetify",
-      "webpack-env"
-    ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
   },
-  "types": [ "node" ],
-  "typeRoots": [ "../node_modules/@types" ],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "extends": "@tsconfig/node14/tsconfig.json"
 }

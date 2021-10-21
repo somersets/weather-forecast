@@ -34,12 +34,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { ICurrentForecastMain } from "../../types/types";
+
 @Component({
   name: "CurrentForecast",
 })
 export default class CurrentForecast extends Vue {
-  @Prop({ required: true }) readonly currentForecast;
-  @Prop({ required: true, type: String }) readonly cityName;
+  @Prop({ required: true }) readonly currentForecast!: ICurrentForecastMain;
+  @Prop({ required: true, type: String }) readonly cityName!: string;
 }
 </script>
 

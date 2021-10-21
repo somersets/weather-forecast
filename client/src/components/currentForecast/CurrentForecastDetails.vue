@@ -18,92 +18,35 @@
     <div class="cloud-back">
       <img src="../../assets/cloud-background.png" alt="" />
     </div>
-    <v-card-text class="d-flex align-center parameter pa-0">
-      <div class="parameter__parameter-icon mr-5">
-        <img src="../../assets/temp.svg" alt="" />
-      </div>
-      <div class="parameter__name mr-5 blue-grey--text lighten-2">
-        {{ $t("currentForecastDetails.temp") }}
-      </div>
-      <div class="parameter__value">
-        {{ forecastDetails.maxTemp }}° -
-        {{ $t("currentForecastDetails.feels_like") }}
-        {{ forecastDetails.feels_like }}°
-      </div>
-    </v-card-text>
-    <v-card-text class="d-flex align-center parameter pa-0">
-      <div class="parameter__parameter-icon mr-5">
-        <img src="../../assets/pressure.png" alt="" />
-      </div>
-      <div class="parameter__name mr-5 blue-grey--text lighten-2">
-        {{ $t("currentForecastDetails.pressure.name") }}
-      </div>
-      <div class="parameter__value">
-        {{ (forecastDetails.pressure / 1.333).toFixed(0) }}
-        {{ $t("currentForecastDetails.pressure.pressureInMM") }} - {{ $t("currentForecastDetails.pressure.status") }}
-      </div>
-    </v-card-text>
-    <v-card-text class="d-flex align-center parameter pa-0">
-      <div class="parameter__parameter-icon mr-5">
-        <img src="../../assets/precipitation.svg" alt="" />
-      </div>
-      <div class="parameter__name mr-5 blue-grey--text lighten-2">
-        {{ $t("currentForecastDetails.precipitation") }}
-      </div>
-      <div class="parameter__value">Без осадков</div>
-    </v-card-text>
-    <v-card-text class="d-flex align-center parameter pa-0">
-      <div class="parameter__parameter-icon mr-5">
-        <img src="../../assets/wind.svg" alt="" />
-      </div>
-      <div class="parameter__name mr-5 blue-grey--text lighten-2">
-        {{ $t("currentForecastDetails.wind") }}
-      </div>
-      <div class="parameter__value">
-        {{ forecastDetails.wind_speed }} м/с,
-        <span v-html="getSideArrows(forecastDetails.wind_deg)"></span>
-        - {{ getCategorySpeed(forecastDetails.wind_speed) }}
-      </div>
-    </v-card-text>
+
+    <CurrentForecastDetailsPressure :forecast-details="forecastDetails" />
+    <CurrentForecastDetailsPrecipitation />
+    <CurrentForecastDetailsWind :forecast-details="forecastDetails" />
   </v-card>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import enums from "@/utils/enums";
-import checkLocale from "@/utils/checkLocale";
+import { ICurrentForecastDetails } from "../../types/types";
+import CurrentForecastDetailsPrecipitation from "@/components/currentForecast/CurrentForecastDetailsPrecipitation.vue";
+import CurrentForecastDetailsWind from "@/components/currentForecast/CurrentForecastDetailsWind.vue";
+import CurrentForecastDetailsPressure from "@/components/currentForecast/CurrentForecastDetailsPressure.vue";
 
 @Component({
   name: "CurrentForecastDetails",
+  components: {
+    CurrentForecastDetailsPrecipitation,
+    CurrentForecastDetailsWind,
+    CurrentForecastDetailsPressure,
+  },
 })
 export default class CurrentForecastDetails extends Vue {
-  @Prop({ required: true }) readonly forecastDetails;
-
-  getSideArrows(deg: number): string {
-    const locales = [
-      { code: "ru", locale: `${deg}${enums.sideArrowsRu[(deg / 45) | 0]}` },
-      { code: "en", locale: `${deg}${enums.sideArrowsEng[(deg / 45) | 0]}` },
-    ];
-    return checkLocale(this.$i18n.locale, locales);
-  }
-  getCategorySpeed(windSpeed) {
-    for (let key in enums.categorySpeedRu) {
-      if (!Number.isNaN(Number(key))) {
-        if (windSpeed < Number(key)) {
-          const locales = [
-            { code: "ru", locale: enums.categorySpeedRu[key] },
-            { code: "en", locale: enums.categorySpeedEng[key] },
-          ];
-          return checkLocale(this.$i18n.locale, locales);
-        }
-      }
-    }
-    console.log(enums.categorySpeedRu[windSpeed]);
-  }
+  @Prop({ required: true, type: Object })
+  readonly forecastDetails!: ICurrentForecastDetails;
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .parameters {
   position: relative;
   .cloud-back {

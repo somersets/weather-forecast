@@ -1,5 +1,5 @@
 import axios from "axios";
-import $i18n from "@/i18n/i18n";
+import $i18n from "../i18n/i18n";
 // const lang = window.navigator.language.slice(0, 2) || "en";
 // небольшая прослойка для запросов
 
