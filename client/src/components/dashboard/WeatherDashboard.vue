@@ -40,7 +40,6 @@ export default class WeatherDashboard extends Vue {
   forecast: object = {};
   handleCurrentForecast(forecast: ICurrentForecast) {
     this.forecast = forecast;
-    console.log(this.forecast);
   }
   get isCurrentForecastEmpty() {
     return !!Object.keys(this.forecast).length;

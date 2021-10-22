@@ -66,4 +66,16 @@ interface ICurrentForecastDetails {
   feels_like: string;
 }
 
-export { ILocale, IForecast, ICurrentForecast, ICurrentForecastMain, ICurrentForecastDetails };
+interface ILocales {
+  code: string;
+  locale: string;
+}
+
+export {
+  ILocales,
+  ILocale,
+  IForecast,
+  ICurrentForecast,
+  ICurrentForecastMain,
+  ICurrentForecastDetails,
+};

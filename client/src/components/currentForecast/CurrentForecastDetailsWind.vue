@@ -18,7 +18,7 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { ICurrentForecastDetails } from "../../types/types";
 import enums from "../../utils/enums";
-import checkLocale from "../../utils/checkLocale";
+import { checkLocale, createLocales } from "../../utils/locale";
 @Component({
   name: "CurrentForecastDetailsWind",
 })
@@ -27,10 +27,9 @@ export default class CurrentForecastDetailsWind extends Vue {
   forecastDetails!: ICurrentForecastDetails;
 
   getSideArrows(deg: number): string {
-    const locales = [
-      { code: "ru", locale: `${deg}${enums.sideArrowsRu[(deg / 45) | 0]}` },
-      { code: "en", locale: `${deg}${enums.sideArrowsEng[(deg / 45) | 0]}` },
-    ];
+    const arrowDegRu: string = `${deg}${enums.sideArrowsRu[(deg / 45) | 0]}`;
+    const arrowDegEng: string = `${deg}${enums.sideArrowsEng[(deg / 45) | 0]}`;
+    const locales = createLocales(["ru", "en"], [arrowDegRu, arrowDegEng]);
     return checkLocale(this.$i18n.locale, locales);
   }
 
@@ -38,10 +37,10 @@ export default class CurrentForecastDetailsWind extends Vue {
     for (let key in enums.categorySpeedRu) {
       if (!Number.isNaN(Number(key))) {
         if (Number.parseInt(windSpeed) < Number(key)) {
-          const locales = [
-            { code: "ru", locale: enums.categorySpeedRu[key] },
-            { code: "en", locale: enums.categorySpeedEng[key] },
-          ];
+          const locales = createLocales(
+            ["ru", "en"],
+            [enums.categorySpeedRu[key], enums.categorySpeedEng[key]]
+          );
           return checkLocale(this.$i18n.locale, locales);
         }
       }

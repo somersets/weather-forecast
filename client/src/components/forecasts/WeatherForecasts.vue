@@ -65,7 +65,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import enums from "../../utils/enums";
-import checkLocale from "../../utils/checkLocale";
+import { checkLocale, createLocales } from "../../utils/locale";
 import { IForecast, ICurrentForecast } from "../../types/types";
 
 @Component({
@@ -132,7 +132,6 @@ export default class WeatherForecasts extends Vue {
   }
 
   normalizeDateFormat(timestamp: number, options: object): string {
-    // перевод из UNIX в читабельный формат
     return new Date(timestamp * 1000).toLocaleString(
       `${this.$i18n.locale}-${this.$i18n.locale}`,
       options
@@ -140,10 +139,10 @@ export default class WeatherForecasts extends Vue {
   }
 
   getCorrectedWeekDay(day: number, cb: any) {
-    const locales = [
-      { code: "ru", locale: enums.weekDaysRu[day] },
-      { code: "en", locale: enums.weekDaysEng[day] },
-    ];
+    const locales = createLocales(
+      ["ru", "en"],
+      [enums.weekDaysRu[day], enums.weekDaysEng[day]]
+    );
     if (day === 0 || day === 1) {
       return checkLocale(this.$i18n.locale, locales);
     } else {

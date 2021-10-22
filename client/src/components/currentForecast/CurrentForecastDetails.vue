@@ -18,7 +18,7 @@
     <div class="cloud-back">
       <img src="../../assets/cloud-background.png" alt="" />
     </div>
-
+    <CurrentForecastDetailsTemperature :forecast-details="forecastDetails" />
     <CurrentForecastDetailsPressure :forecast-details="forecastDetails" />
     <CurrentForecastDetailsPrecipitation />
     <CurrentForecastDetailsWind :forecast-details="forecastDetails" />
@@ -31,6 +31,7 @@ import { ICurrentForecastDetails } from "../../types/types";
 import CurrentForecastDetailsPrecipitation from "@/components/currentForecast/CurrentForecastDetailsPrecipitation.vue";
 import CurrentForecastDetailsWind from "@/components/currentForecast/CurrentForecastDetailsWind.vue";
 import CurrentForecastDetailsPressure from "@/components/currentForecast/CurrentForecastDetailsPressure.vue";
+import CurrentForecastDetailsTemperature from "@/components/currentForecast/CurrentForecastDetailsTemperature.vue";
 
 @Component({
   name: "CurrentForecastDetails",
@@ -38,6 +39,7 @@ import CurrentForecastDetailsPressure from "@/components/currentForecast/Current
     CurrentForecastDetailsPrecipitation,
     CurrentForecastDetailsWind,
     CurrentForecastDetailsPressure,
+    CurrentForecastDetailsTemperature,
   },
 })
 export default class CurrentForecastDetails extends Vue {
