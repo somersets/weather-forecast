@@ -1,22 +1,15 @@
 {
-  "name": "weather-forecast",
+  "name": "server",
   "version": "1.0.0",
-  "description": "## Project setup ``` npm install ```",
-  "main": "server/server.js",
+  "description": "",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "npm run serve --prefix client",
-    "server": "node server/server.js",
-    "dev": "concurrently  \"npm run server\" \"npm run client\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/somersets/weather-forecast.git"
+    "start": "node server.js"
   },
   "author": "Nikita Likhachev",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/somersets/weather-forecast/issues"
-  },
-  "homepage": "https://github.com/somersets/weather-forecast#readme"
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
