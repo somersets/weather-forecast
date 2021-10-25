@@ -1,7 +1,7 @@
 <template>
   <v-card-text class="d-flex align-center parameter pa-0">
     <div class="parameter__parameter-icon mr-5">
-      <img src="../../assets/wind.svg" alt="" />
+      <img src="../../../assets/wind.svg" alt="" />
     </div>
     <div class="parameter__name mr-5 blue-grey--text lighten-2">
       {{ $t("currentForecastDetails.wind") }}
@@ -16,9 +16,9 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { ICurrentForecastDetails } from "../../types/types";
-import enums from "../../utils/enums";
-import { checkLocale, createLocales } from "../../utils/locale";
+import { ICurrentForecastDetails } from "../../../types/types";
+import enums from "../../../utils/enums";
+import { checkLocale, createLocales } from "../../../utils/locale";
 @Component({
   name: "CurrentForecastDetailsWind",
 })

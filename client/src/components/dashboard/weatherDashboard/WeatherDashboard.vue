@@ -21,10 +21,10 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import CurrentForecast from "@/components/currentForecast/CurrentForecast.vue";
-import CurrentForecastDetails from "@/components/currentForecast/CurrentForecastDetails.vue";
-import WeatherForecasts from "@/components/forecasts/WeatherForecasts.vue";
-import { ICurrentForecast, IForecast } from "../../types/types";
+import CurrentForecast from "../currentForecast/CurrentForecast.vue";
+import CurrentForecastDetails from "../currentForecast/CurrentForecastDetails.vue";
+import WeatherForecasts from "../forecasts/WeatherForecasts.vue";
+import { ICurrentForecast, IForecast } from "../../../types/types";
 
 @Component({
   name: "WeatherDashboard",
@@ -35,7 +35,8 @@ import { ICurrentForecast, IForecast } from "../../types/types";
   },
 })
 export default class WeatherDashboard extends Vue {
-  @Prop({ required: true, type: Array }) readonly dataForecasts!: Array<IForecast>;
+  @Prop({ required: true, type: Array })
+  readonly dataForecasts!: Array<IForecast>;
   @Prop({ required: true, type: String }) readonly cityName!: string;
   forecast: object = {};
   handleCurrentForecast(forecast: ICurrentForecast) {

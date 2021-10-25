@@ -30,8 +30,6 @@ enum weekDaysEng {
   "Tomorrow",
 }
 
-
-
 enum categorySpeedRu {
   "штиль" = 0.2,
   "тихий" = 1.5,

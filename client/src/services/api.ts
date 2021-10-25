@@ -29,7 +29,9 @@ apiClient.interceptors.response.use(
 
 export default {
   async getWeatherCurrent(city: string, units: string = "metric") {
-    return await apiClient.get(`weather?q=${city}&units=${units}&lang=${$i18n.locale}`);
+    return await apiClient.get(
+      `weather?q=${city}&units=${units}&lang=${$i18n.locale}`
+    );
   },
   async oneCallForecast(
     lat: number,

@@ -64,9 +64,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import enums from "../../utils/enums";
-import { checkLocale, createLocales } from "../../utils/locale";
-import { IForecast, ICurrentForecast } from "../../types/types";
+import enums from "../../../utils/enums";
+import { checkLocale, createLocales } from "../../../utils/locale";
+import { IForecast, ICurrentForecast } from "../../../types/types";
 
 @Component({
   name: "WeatherForecasts",

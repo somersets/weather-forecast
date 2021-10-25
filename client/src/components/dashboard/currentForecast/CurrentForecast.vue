@@ -12,7 +12,15 @@
         >
           {{ currentForecast.maxTemp }}
         </div>
-        <div class="current-temp-title__day text-h3 font-weight-medium mb-8 text-no-wrap">
+        <div
+          class="
+            current-temp-title__day
+            text-h3
+            font-weight-medium
+            mb-8
+            text-no-wrap
+          "
+        >
           {{ currentForecast.day }}
         </div>
       </div>
@@ -27,14 +35,16 @@
       <div class="text-h5 blue-grey--text lighten-2 mb-3">
         {{ $t("currentForecast.time") }} {{ currentForecast.time }}
       </div>
-      <div class="text-h5 blue-grey--text lighten-2">{{ $t("currentForecast.city") }} {{ cityName }}</div>
+      <div class="text-h5 blue-grey--text lighten-2">
+        {{ $t("currentForecast.city") }} {{ cityName }}
+      </div>
     </v-card-text>
   </v-card>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { ICurrentForecastMain } from "../../types/types";
+import { ICurrentForecastMain } from "../../../types/types";
 
 @Component({
   name: "CurrentForecast",

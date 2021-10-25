@@ -16,7 +16,7 @@
     "
   >
     <div class="cloud-back">
-      <img src="../../assets/cloud-background.png" alt="" />
+      <img src="../../../assets/cloud-background.png" alt="" />
     </div>
     <CurrentForecastDetailsTemperature :forecast-details="forecastDetails" />
     <CurrentForecastDetailsPressure :forecast-details="forecastDetails" />
@@ -27,11 +27,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { ICurrentForecastDetails } from "../../types/types";
-import CurrentForecastDetailsPrecipitation from "@/components/currentForecast/CurrentForecastDetailsPrecipitation.vue";
-import CurrentForecastDetailsWind from "@/components/currentForecast/CurrentForecastDetailsWind.vue";
-import CurrentForecastDetailsPressure from "@/components/currentForecast/CurrentForecastDetailsPressure.vue";
-import CurrentForecastDetailsTemperature from "@/components/currentForecast/CurrentForecastDetailsTemperature.vue";
+import { ICurrentForecastDetails } from "../../../types/types";
+import CurrentForecastDetailsPrecipitation from "./CurrentForecastDetailsPrecipitation.vue";
+import CurrentForecastDetailsWind from "./CurrentForecastDetailsWind.vue";
+import CurrentForecastDetailsPressure from "./CurrentForecastDetailsPressure.vue";
+import CurrentForecastDetailsTemperature from "./CurrentForecastDetailsTemperature.vue";
 
 @Component({
   name: "CurrentForecastDetails",
