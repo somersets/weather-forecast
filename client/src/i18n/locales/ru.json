@@ -12,6 +12,7 @@
       "status": "Нормальное"
     },
     "precipitation": "Осадки",
+    "no_precipitation": "Без осадков",
     "wind": "Ветер"
   },
   "appHeader": {

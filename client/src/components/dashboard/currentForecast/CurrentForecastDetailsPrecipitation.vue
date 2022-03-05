@@ -6,7 +6,9 @@
     <div class="parameter__name mr-5 blue-grey--text lighten-2">
       {{ $t("currentForecastDetails.precipitation") }}
     </div>
-    <div class="parameter__value">Без осадков</div>
+    <div class="parameter__value">
+      {{ $t("currentForecastDetails.no_precipitation") }}
+    </div>
   </v-card-text>
 </template>
 

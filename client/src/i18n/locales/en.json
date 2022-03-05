@@ -12,6 +12,7 @@
       "status": "normal"
     },
     "precipitation": "Precipitation",
+    "no_precipitation": "No precipitation",
     "wind": "Wind"
   },
   "appHeader": {
